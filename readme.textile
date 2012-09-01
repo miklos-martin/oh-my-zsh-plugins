@@ -11,6 +11,7 @@ It also defines the @vhost@ command, which can generate virtualhost config files
 This template can be easily customized setting the @NGINX_VHOST_TEMPLATE@ variable in your @.zshrc@ to point to your own template file.
 Inside that template you can use @user, vhost and pool_port@ variables like this: @root /home/{user}/www/{vhost}/web;@
 The @pool_port@ is for php-fpm pools. It is calculated by adding 10000 to the user's id. You should have a pool listening on this port.
+The default template is for a Symfony 2 application in dev environment, because 9 out of 10 times that's what I need.
 The @vhost@ command accepts a few arguments, type @vhost -h@ to display help.
 Here is the current output:
 <pre>
@@ -19,7 +20,7 @@ Usage: vhost [options] [vhost_name]
 
 Options
   -l   Lists enabled vhosts
-  -u   Sets the user
+  -u   Sets the user - defaults to the current user (YOUR NAME HERE)
   -n   Does not enable the generated vhost
   -w   Write the vhost to the /etc/hosts file pointing to 127.0.0.1 (writes it at the end of the first line actually)
   -h   Get this help message
