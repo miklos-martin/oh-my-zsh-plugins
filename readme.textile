@@ -9,8 +9,10 @@ It defines @en@ and @dis@ commands for enabling/disabling sites.
 It also has completition for these actions. It completes the argument from listing the sites-available (when @en@ is used) and the sites-enabled (when @dis@ is used).
 It only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
 
-It also defines the @vhost@ command, which can generate virtualhost config files based on a template. This template can be easily customized setting the NGINX_VHOST_TEMPLATE variable to point to your own template file. Inside that template you can use @user, vhost and pool_port@ variables like this: @root /home/{user}/www/{vhost}/web;@
-The @pool_port@ is for php-fpm pools. It is calculated by adding 10000 to the users id. You should have a pool listening on this port.
+It also defines the @vhost@ command, which can generate virtualhost config files based on a template.
+This template can be easily customized setting the @NGINX_VHOST_TEMPLATE@ variable in your @.zshrc@ to point to your own template file.
+Inside that template you can use @user, vhost and pool_port@ variables like this: @root /home/{user}/www/{vhost}/web;@
+The @pool_port@ is for php-fpm pools. It is calculated by adding 10000 to the user's id. You should have a pool listening on this port.
 The @vhost@ command accepts a few arguments, type @vhost -h@ to display help.
 Here is the current output:
 <pre>
@@ -25,9 +27,28 @@ Options
   -h   Get this help message
 </pre>
 
-h2. Future plans
+h4. Example
 
-Create a php-fpm plugin which is able to create pools for a given user.
+<pre>
+vhost -nw -u USER_NAME_HERE VHOST_NAME_HERE
+</pre>
+
+
+h3. php-fpm
+
+This plugin can generate a pool configuration file for a given user based on a template.
+This template can be easily customized setting the @FPM_POOL_TEMPLATE@ variable in your @.zshrc@ to point to your own template file.
+Inside that template you can use @user, group and pool_port@ variables like this: @listen = 127.0.0.1:{pool_port}@
+The @pool_port@ is calculated by adding 10000 to the user's id. The @group@ is the first group of the user's groups.
+
+If @pool@ is called without aruments, it generates the pool for the current user.
+This plugin completes the arguments from the users' list. 
+
+h4. Example
+
+<pre>
+pool USER_NAME_HERE
+</pre>
 
 
 That's it for now.
