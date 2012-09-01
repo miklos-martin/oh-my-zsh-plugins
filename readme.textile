@@ -4,10 +4,8 @@ h2. Plugins
 
 h3. nginx
 
-For now, this is the only one.
 It defines @en@ and @dis@ commands for enabling/disabling sites.
 It also has completition for these actions. It completes the argument from listing the sites-available (when @en@ is used) and the sites-enabled (when @dis@ is used).
-It only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
 
 It also defines the @vhost@ command, which can generate virtualhost config files based on a template.
 This template can be easily customized setting the @NGINX_VHOST_TEMPLATE@ variable in your @.zshrc@ to point to your own template file.
@@ -27,6 +25,10 @@ Options
   -h   Get this help message
 </pre>
 
+h4. Dependencies
+
+This plugin only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
+
 h4. Example
 
 <pre>
@@ -42,7 +44,11 @@ Inside that template you can use @user, group and pool_port@ variables like this
 The @pool_port@ is calculated by adding 10000 to the user's id. The @group@ is the first group of the user's groups.
 
 If @pool@ is called without aruments, it generates the pool for the current user.
-This plugin completes the arguments from the users' list. 
+This plugin completes the arguments from the users' list.
+
+h4. Dependencies
+
+This plugin only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
 
 h4. Example
 
