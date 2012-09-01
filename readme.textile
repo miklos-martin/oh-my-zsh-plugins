@@ -1,8 +1,8 @@
 This repo contains some useful plugins for oh-my-zsh.
 
-h2. Plugins
+h1. Plugins
 
-h3. nginx
+h2. nginx
 
 It defines @en@ and @dis@ commands for enabling/disabling sites.
 It also has completition for these actions. It completes the argument from listing the sites-available (when @en@ is used) and the sites-enabled (when @dis@ is used).
@@ -26,18 +26,18 @@ Options
   -h   Get this help message
 </pre>
 
-h4. Dependencies
+h3. Dependencies
 
 This plugin only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
 
-h4. Example
+h3. Example
 
 <pre>
 vhost -nw -u USER_NAME_HERE VHOST_NAME_HERE
 </pre>
 
 
-h3. php-fpm
+h2. php-fpm
 
 This plugin can generate a pool configuration file for a given user based on a template.
 This template can be easily customized setting the @FPM_POOL_TEMPLATE@ variable in your @.zshrc@ to point to your own template file.
@@ -47,11 +47,11 @@ The @pool_port@ is calculated by adding 10000 to the user's id. The @group@ is t
 If @pool@ is called without aruments, it generates the pool for the current user.
 This plugin completes the arguments from the users' list.
 
-h4. Dependencies
+h3. Dependencies
 
 This plugin only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
 
-h4. Example
+h3. Example
 
 <pre>
 pool USER_NAME_HERE
