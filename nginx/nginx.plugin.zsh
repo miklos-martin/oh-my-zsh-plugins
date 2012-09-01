@@ -27,24 +27,24 @@ fi
 # Enabling a site
 en () {
     if [ ! $1 ]; then
-        echo "\033[337;41m\n\tKötelező megadni a virtualhost nevét!\n\033[0m";
+        echo "\033[337;41m\nThe name of the vhost is required!\n\033[0m";
         return
     fi
     
     if [ ! -e $NGINX_DIR/sites-available/$1 ]; then
-        echo "\033[31m$1\033[0m nem létezik";
+        echo "\033[31m$1\033[0m doesn't exist";
         return
     fi
 
     if [ ! -e $NGINX_DIR/sites-enabled/$1 ]; then
   	    $sudo ln -s $NGINX_DIR/sites-available/$1 $NGINX_DIR/sites-enabled/$1;
 	    if [ -e /etc/nginx/sites-enabled/$1 ]; then
-        	echo "\033[32m$1\033[0m sikeresen engedélyezve";
+        	echo "\033[32m$1\033[0m successfully enabled";
         else
-            echo "\033[31m$1\033[0m engedélyezésekor hiba lépett fel";
+            echo "An error occured during the enabling of \033[31m$1\033[0m";
         fi
     else
-        echo "\033[31m$1\033[0m már engedélyezve van";
+        echo "\033[31m$1\033[0m is already enabled";
     fi
 }
 compdef _nginx_en en
@@ -52,18 +52,18 @@ compdef _nginx_en en
 # Disabling a site
 dis () {
     if [ ! $1 ]; then
-        echo "\033[337;41m\n\tKötelező megadni a virtualhost nevét!\n\033[0m";
+        echo "\033[337;41m\nThe name of the vhost is required!\n\033[0m";
         return
     fi
 
     if [ ! -e $NGINX_DIR/sites-enabled/$1 ]; then
-        echo "\033[31m$1\033[0m nem létezik";
+        echo "\033[31m$1\033[0m doesn't exist";
     else
 	    $sudo rm -f $NGINX_DIR/sites-enabled/$1;
 	    if [ ! -e $NGINX_DIR/sites-enabled/$1 ]; then
-        	echo "\033[32m$1\033[0m sikeresen letiltva";
+        	echo "\033[32m$1\033[0m successfully disabled";
         else
-            echo "\033[31m$1\033[0m letiltásakor hiba lépett fel";
+            echo "An error occured during the disabling of \033[31m$1\033[0m";
         fi
     fi
 }
