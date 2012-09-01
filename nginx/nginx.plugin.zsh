@@ -1,5 +1,11 @@
 : ${NGINX_DIR:=/etc/nginx}
 
+if [ $use_sudo -eq 1 ]; then
+    sudo="sudo"
+else
+    sudo=""
+fi
+
 # nginx basic completition
 
 _nginx_get_en_command_list () {
@@ -17,12 +23,6 @@ _nginx_en () {
 _nginx_dis () {
    compadd `_nginx_get_dis_command_list`
 }
-
-if [ $use_sudo -eq 1 ]; then
-    sudo="sudo"
-else
-    sudo=""
-fi
 
 # Enabling a site
 en () {
@@ -69,11 +69,6 @@ dis () {
 }
 compdef _nginx_dis dis
 
-# Restarting nginx
-nres () {
-    service nginx restart   
-}
-
 # Completition of vhost
 _nginx_get_possible_vhost_list () {
     ls -a $HOME/www | awk '/^[^.][a-z0-9._]+$/ { print $1 }'
@@ -93,7 +88,6 @@ vhost () {
         n ) enable=0; shift 1 ;;
         w ) write_hosts=1; shift 1 ;;
         h ) _vhost_usage; return ;;
-#       * ) _vhost_usage; return ;; # Default.
       esac
     done
     
@@ -108,7 +102,7 @@ vhost () {
         return
     fi
     
-    _generate $vhost $user
+    _vhost_generate $vhost $user
     
     if [ $enable -eq 1 ]; then
         en $vhost
@@ -133,7 +127,7 @@ _vhost_usage () {
 }
 
 # Generate config file
-_generate () {
+_vhost_generate () {
     user=$(cat /etc/passwd | grep $2 | awk -F : '{print $1 }')
     
     if [ ! $user ]; then
@@ -147,10 +141,16 @@ _generate () {
     pool_port=1$user_id
     : ${NGINX_VHOST_TEMPLATE:=$ZSH/plugins/nginx/templates/symfony2_vhost}
     
-    conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_id}/'$pool_port'/g' $NGINX_VHOST_TEMPLATE )
+    conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_port}/'$pool_port'/g' $NGINX_VHOST_TEMPLATE )
     
     echo $conf > $1.tmp
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1
+    
+    if [ -e $NGINX_DIR/sites-available/$1 ]; then
+        echo "\033[32m$1\033[0m vhost has been successfully created"
+    else
+        echo "An error occured during the creating of \033[31m$1\033[0m vhost"
+    fi
 }
 
 # Write the /etc/hosts file
@@ -167,4 +167,9 @@ _write_hosts () {
 	done
 	
 	$sudo mv $temp /etc/hosts;
+	
+	"\033[32m$1\033[0m vhost has been successfully written in /etc/hosts"
 }
+
+alias ngt="$sudo nginx -t"
+alias ngr="$sudo service nginx restart"
