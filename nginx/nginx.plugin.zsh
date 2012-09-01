@@ -85,26 +85,38 @@ _nginx_vhost () {
 
 # Parsing arguments
 vhost () {
-    while getopts ":lu:nh" Option
+    while getopts ":lu:nwh" option
     do
-      case $Option in
+      case $option in
         l ) ls $NGINX_DIR/sites-enabled; return ;;
         u ) user=$OPTARG; shift 2 ;;
         n ) enable=0; shift 1 ;;
+        w ) write_hosts=1; shift 1 ;;
         h ) _vhost_usage; return ;;
 #       * ) _vhost_usage; return ;; # Default.
       esac
     done
     
+    vhost=${@: -1}
+    
     : ${user:=$USER}
     : ${enable:=1}
+    : ${write_hosts:=0}
     
-    if [ ! $1 ]; then
+    if [ ! $vhost ]; then
         echo "\033[337;41m\nThe name of the vhost is required!\n\033[0m"
         return
     fi
     
-    _generate $1 $user $enable
+    _generate $vhost $user
+    
+    if [ $enable -eq 1 ]; then
+        en $vhost
+    fi
+    
+    if [ $write_hosts -eq 1 ]; then
+        _write_hosts $vhost
+    fi
 }
 compdef _nginx_vhost vhost
 
@@ -115,6 +127,7 @@ _vhost_usage () {
     echo "  -l   Lists enabled vhosts"
     echo "  -u   Sets the user"
     echo "  -n   Does not enable the generated vhost"
+    echo "  -w   Write the vhost to the /etc/hosts file pointing to 127.0.0.1 (writes it at the end of the first line actually)"
     echo "  -h   Get this help message"
     return
 }
@@ -138,8 +151,20 @@ _generate () {
     
     echo $conf > $1.tmp
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1
-    
-    if [ $3 -eq 1 ]; then
-        en $1
-    fi
+}
+
+# Write the /etc/hosts file
+_write_hosts () {
+    temp=$HOME/hosts.temp
+    exec < /etc/hosts
+	while read line
+	do
+		if [ -e $temp ]; then
+			echo "$line" >> $temp;
+		else
+			echo "$line $1" > $temp;		
+		fi
+	done
+	
+	$sudo mv $temp /etc/hosts;
 }
