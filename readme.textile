@@ -7,5 +7,10 @@ h3. nginx
 For now, this is the only one.
 It defines @en@ and @dis@ commands for enabling/disabling sites.
 It also has completition for these actions. It completes the argument from listing the sites-available (when @en@ is used) and the sites-enabled (when @dis@ is used).
-It only works, if @debian@ plugin is activated, because this plugin relies on the $use_sudo variable, which is defined in the @debian@ plugin.
+It only works, if @debian@ plugin is activated, because this plugin relies on the @$use_sudo@ variable, which is defined in the @debian@ plugin.
+
+h2. Future plans
+
+Extend the nginx plugin to be able to generate config files for sites and a given user.
+Create a php-fpm plugin which is able to create pools for a given user.
 
