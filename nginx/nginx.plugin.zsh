@@ -144,10 +144,10 @@ _generate () {
     echo "Generating \033[32m$1\033[0m vhost for \033[33m$user\033[0m user"
         
     user_id=$(cat /etc/passwd | grep $2 | awk -F : '{print $3 }')
-    pool_id=1$user_id
+    pool_port=1$user_id
     : ${NGINX_VHOST_TEMPLATE:=$ZSH/plugins/nginx/templates/symfony2_vhost}
     
-    conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_id}/'$pool_id'/g' $NGINX_VHOST_TEMPLATE )
+    conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_id}/'$pool_port'/g' $NGINX_VHOST_TEMPLATE )
     
     echo $conf > $1.tmp
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1

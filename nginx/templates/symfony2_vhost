@@ -12,9 +12,9 @@ server {
         try_files $uri $uri/ /app_dev.php;
     }
 
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:{pool_id}
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:{pool_port}
     location ~ ^/(app|app_dev|check)\.php(/|$) {
-        fastcgi_pass   127.0.0.1:{pool_id};
+        fastcgi_pass   127.0.0.1:{pool_port};
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
         fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
