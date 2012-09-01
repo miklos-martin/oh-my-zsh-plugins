@@ -12,10 +12,23 @@ It only works, if @debian@ plugin is activated, because this plugin relies on th
 It also defines the @vhost@ command, which can generate virtualhost config files based on a template. This template can be easily customized setting the NGINX_VHOST_TEMPLATE variable to point to your own template file. Inside that template you can use @user, vhost and pool_id@ variables like this: @root /home/{user}/www/{vhost}/web;@
 The @pool_id@ is for php-fpm pools. It's a port, actually. It is calculated by adding 10000 to the users id. You should have a pool listening on this port.
 The @vhost@ command accepts a few arguments, type @vhost -h@ to display help.
+Here is the current output:
+<pre>
+mikka :: ~ » vhost -h
+Usage: vhost [options] [vhost_name]
 
+Options
+  -l   Lists enabled vhosts
+  -u   Sets the user
+  -n   Does not enable the generated vhost
+  -w   Write the vhost to the /etc/hosts file pointing to 127.0.0.1 (writes it at the end of the first line actually)
+  -h   Get this help message
+</pre>
 
 h2. Future plans
 
-Extend the nginx plugin to be able to completely remove a virtualhost.
 Create a php-fpm plugin which is able to create pools for a given user.
+
+
+That's it for now.
 
