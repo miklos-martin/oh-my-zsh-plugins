@@ -119,7 +119,7 @@ _vhost_usage () {
     echo
     echo "Options"
     echo "  -l   Lists enabled vhosts"
-    echo "  -u   Sets the user"
+    echo "  -u   Sets the user - defaults to the current user ($USER)"
     echo "  -n   Does not enable the generated vhost"
     echo "  -w   Write the vhost to the /etc/hosts file pointing to 127.0.0.1 (writes it at the end of the first line actually)"
     echo "  -h   Get this help message"
