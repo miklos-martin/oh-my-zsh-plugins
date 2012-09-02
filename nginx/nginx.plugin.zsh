@@ -1,4 +1,5 @@
 : ${NGINX_DIR:=/etc/nginx}
+: ${NGINX_VHOST_TEMPLATE:=$ZSH/plugins/nginx/templates/symfony2}
 
 if [ $use_sudo -eq 1 ]; then
     sudo="sudo"
@@ -80,28 +81,47 @@ _nginx_vhost () {
 
 # Parsing arguments
 vhost () {
-    while getopts ":lu:nwh" option
+    user=$USER;
+    template=$NGINX_VHOST_TEMPLATE
+    tpl="non_existing_template"
+    enable=1
+    write_hosts=0
+    args=""
+
+    while getopts ":lu:t:nwh" option
     do
       case $option in
         l ) ls $NGINX_DIR/sites-enabled; return ;;
-        u ) user=$OPTARG; shift 2 ;;
-        n ) enable=0; shift 1 ;;
-        w ) write_hosts=1; shift 1 ;;
+        u ) user=$OPTARG; args="$args -u $OPTARG" ;;
+        t ) tpl=$OPTARG; args="$args -t $OPTARG" ;;
+        n ) enable=0; args="$args -n" ;;
+        w ) write_hosts=1; args="$args -w" ;;
         h ) _vhost_usage; return ;;
       esac
     done
     
     vhost=${@: -1}
-    
-    : ${user:=$USER}
-    : ${enable:=1}
-    : ${write_hosts:=0}
+    vhostNotGiven=0
     
     if [ ! $vhost ]; then
+        vhostNotGiven=1
+    else
+        if [ $(echo $args | grep -o $vhost) ]; then
+            vhostNotGiven=1
+        fi
+    fi
+    
+    if [ $vhostNotGiven -eq 1 ]; then
         echo "\033[337;41m\nThe name of the vhost is required!\n\033[0m"
         return
     fi
     
+    if [ -e $ZSH/plugins/nginx/templates/$tpl ]; then
+        template=$ZSH/plugins/nginx/templates/$tpl
+    elif [ -e $tpl ]; then
+        template=$tpl
+    fi
+        
     _vhost_generate $vhost $user
     
     if [ $enable -eq 1 ]; then
@@ -120,6 +140,7 @@ _vhost_usage () {
     echo "Options"
     echo "  -l   Lists enabled vhosts"
     echo "  -u   Sets the user - defaults to the current user ($USER)"
+    echo "  -t   Sets the template"
     echo "  -n   Does not enable the generated vhost"
     echo "  -w   Write the vhost to the /etc/hosts file pointing to 127.0.0.1 (writes it at the end of the first line actually)"
     echo "  -h   Get this help message"
@@ -139,9 +160,8 @@ _vhost_generate () {
         
     user_id=$(cat /etc/passwd | grep $2 | awk -F : '{print $3 }')
     pool_port=1$user_id
-    : ${NGINX_VHOST_TEMPLATE:=$ZSH/plugins/nginx/templates/symfony2_vhost}
     
-    conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_port}/'$pool_port'/g' $NGINX_VHOST_TEMPLATE )
+    conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_port}/'$pool_port'/g' $template )
     
     echo $conf > $1.tmp
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1
