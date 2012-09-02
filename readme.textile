@@ -8,7 +8,7 @@ It defines @en@ and @dis@ commands for enabling/disabling sites.
 It also has completition for these actions. It completes the argument from listing the sites-available (when @en@ is used) and the sites-enabled (when @dis@ is used).
 
 It also defines the @vhost@ command, which can generate virtualhost config files based on a template.
-This template can be easily customized setting the @NGINX_VHOST_TEMPLATE@ variable in your @.zshrc@ to point to your own template file.
+This template can be easily customized setting the @NGINX_VHOST_TEMPLATE@ variable in your @.zshrc@ to point to your own template file, or you can set the template with the @-t@ option. The script will first look in the @plugins/nginx/templates@ folder, if the file not found there, it checks if the given template exists, then if it's not, falls back to the default symfony2 template.
 Inside that template you can use @user, vhost and pool_port@ variables like this: @root /home/{user}/www/{vhost}/web;@
 The @pool_port@ is for php-fpm pools. It is calculated by adding 10000 to the user's id. You should have a pool listening on this port.
 The default template is for a Symfony 2 application in dev environment, because 9 out of 10 times that's what I need.
@@ -20,7 +20,8 @@ Usage: vhost [options] [vhost_name]
 
 Options
   -l   Lists enabled vhosts
-  -u   Sets the user - defaults to the current user (YOUR NAME HERE)
+  -u   Sets the user - defaults to the current user (mikka)
+  -t   Sets the template
   -n   Does not enable the generated vhost
   -w   Write the vhost to the /etc/hosts file pointing to 127.0.0.1 (writes it at the end of the first line actually)
   -h   Get this help message
@@ -34,6 +35,7 @@ h3. Example
 
 <pre>
 vhost -nw -u USER_NAME_HERE VHOST_NAME_HERE
+vhost -wt plain_php VHOST_NAME_HERE
 </pre>
 
 
