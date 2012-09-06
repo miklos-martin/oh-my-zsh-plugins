@@ -75,7 +75,7 @@ cd in your project's directory, then run @watchless@
 <pre>
 cd path/to/your/project/assets/css
 watchless
-<pre>
+</pre>
 
 h3. Future plans
 
