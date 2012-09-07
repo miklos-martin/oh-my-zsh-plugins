@@ -62,7 +62,8 @@ pool USER_NAME_HERE
 h2. lesscss
 
 This plugin contains one command: @watchless@. It watches recursively in a directory for changes of .less files and compiles them to .css files.
-It contains a few lines of code taken from http://www.ravelrumba.com/blog/watch-compile-less-command-line/comment-page-1/#comment-2464
+Basics taken from http://www.ravelrumba.com/blog/watch-compile-less-command-line/comment-page-1/#comment-2464
+If you want to output minified css, pass the @-x@ option, and it will pass it to lesscss.
 
 h3. Dependencies
 
@@ -74,12 +75,11 @@ cd in your project's directory, then run @watchless@
 
 <pre>
 cd path/to/your/project/assets/css
-watchless
+watchless -x
 </pre>
 
 h3. Future plans
 
-Add option @-x@ and pass it to @lessc@ if present.
 Add option to watch a single file only.
 
 
