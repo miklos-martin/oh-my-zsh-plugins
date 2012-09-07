@@ -63,7 +63,18 @@ h2. lesscss
 
 This plugin contains one command: @watchless@. It watches recursively in a directory for changes of .less files and compiles them to .css files.
 Basics taken from http://www.ravelrumba.com/blog/watch-compile-less-command-line/comment-page-1/#comment-2464
-If you want to output minified css, pass the @-x@ option, and it will pass it to lesscss.
+If you want to output minified css, pass the @-x@ option, and it will pass it to @lessc@.
+If you want to watch all of the less files, but compile just one if any of the watched files changed, use the @-c compile_this.less@ option. This option is very useful if you have multiple less files for variables, for mixins or for defining the look of separate parts of your app, and you have one less file combining the others, like twitter bootstrap does. If that's the case, you don't want to compile all less files to css, just the main one, but you may want to watch for the changes made to the others too.
+Here is the current output of @watchless -h@:
+<pre>
+mikka :: ~ » watchless -h
+Usage: watchless [options]
+
+Options
+  -x   Compiles less files into minified css files
+  -c   Watch all files but compile only the one given here
+  -h   Get this help message
+</pre>
 
 h3. Dependencies
 
@@ -74,13 +85,13 @@ h3. Example
 cd in your project's directory, then run @watchless@
 
 <pre>
-cd path/to/your/project/assets/css
+watchless
+or
 watchless -x
+or
+watchless -xc app.less
 </pre>
 
-h3. Future plans
-
-Add option to watch a single file only.
 
 
 That's it for now.
