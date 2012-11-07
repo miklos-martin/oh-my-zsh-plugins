@@ -152,9 +152,8 @@ _vhost_generate () {
     local user_id=$(cat /etc/passwd | grep $2 | awk -F : '{print $3 }')
     local pool_port=1$user_id
     
-    local conf=$(sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_port}/'$pool_port'/g' $template )
+    sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_port}/'$pool_port'/g' $template | tee > $1.tmp
     
-    echo $conf > $1.tmp
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1
     
     if [ -e $NGINX_DIR/sites-available/$1 ]; then
