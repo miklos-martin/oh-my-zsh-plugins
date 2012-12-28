@@ -2,7 +2,7 @@
 user = {user}
 group = {group}
 
-listen = 127.0.0.1:{pool_port}
+listen = /var/run/php-fpm/{user}.socket
 
 pm = dynamic
 pm.max_children = 10
