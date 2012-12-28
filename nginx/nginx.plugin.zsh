@@ -39,7 +39,7 @@ en () {
 
     if [ ! -e $NGINX_DIR/sites-enabled/$1 ]; then
   	    $sudo ln -s $NGINX_DIR/sites-available/$1 $NGINX_DIR/sites-enabled/$1;
-	    if [ -e /etc/nginx/sites-enabled/$1 ]; then
+	    if [ -e $NGINX_DIR/sites-enabled/$1 ]; then
         	echo "\033[32m$1\033[0m successfully enabled";
         else
             echo "An error occured during the enabling of \033[31m$1\033[0m";
