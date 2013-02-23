@@ -5,6 +5,7 @@
 : ${SYMFONY_COMPLETE_ENTITIES:=""}
 
 _SYMFONY_COMPLETE_CONSOLE=(
+    ./console
     app/console
 )
 
@@ -23,8 +24,6 @@ SYMFONY_DO_COMPLETE_ENTITIES=($_SYMFONY_COMPLETE_ENTITIES $SYMFONY_COMPLETE_ENTI
 
 _symfony2 ()
 {
-    #local asd=(echo $curcontext | tee)
- 
     local console=$words[1]
     
     if [ ! -f "$console" ];then

@@ -115,5 +115,64 @@ h3. Example
 bi jq<TAB>
 </pre>
 
-That's it for now.
+h2. Symfony2
+
+This plugin already existed, but I've made some modifications, to make it smarter.
+
+h3. Aliases
+
+In the meantime, it may have lost some aliases, I'll check on that later.
+
+h3. Completition
+
+Basically, two things happened:
+
+* it is capable to provide completition on multiple consoles.
+* it is capable to provide completition on commands, that require entities as argument
+
+First, it is important, that to run a console command, it isn't absolutely sure you type @app/console@. You may have multiple consoles in multiple applications in the same project.
+What can you do? Give info about your consoles to this plugin. Put an array called @SYMFONY_COMPLETE_CONSOLE@ in your @.zshrc@, *before* the @plugins=(..)@ line.
+@app/console@ and @./console@ will work by default.
+For example:
+<pre>
+##
+# Symfony plugin config
+##
+SYMFONY_COMPLETE_CONSOLE=( 
+	portal/console # for the portal app in project #1
+	admin/console  # for the admin app in project #1
+)
+
+plugins=(symfony2)
+</pre>
+
+The other thing is much more useful. There are a bunch of commands, that require entities as arguments. For example @doctrine:generate:form@.
+Wouldn't it be nice to have completition on entities? Now you have it!
+If you have your own command that takes an entity too, you can add it to the list of commands, that this plugin completes entities on.
+The default list:
+<pre>
+    doctrine:generate:crud
+    doctrine:generate:entities
+    doctrine:generate:form
+    generate:doctrine:crud
+    generate:doctrine:entities
+    generate:doctrine:form
+</pre>
+
+If you need more commands, than put an array called @SYMFONY_COMPLETE_ENTITIES@ in your @.zshrc@, *before* the @plugins=(..)@ line.
+For example:
+<pre>
+##
+# Symfony plugin config
+##
+SYMFONY_COMPLETE_ENTITIES=( 
+    my:own:command
+    my:other:command
+)
+
+plugins=(symfony2)
+</pre>
+
+To build a list of available entities, it uses the @doctrine:mapping:info@ command, in the default environment, with the default entity manager, and in debug mode.
+It could be a problem to you, if you have explicit mapping configured for each environment you use. If it's a real problem, please open an issue about it, or even better, send me a pull request with the solution. Thanks.
 
