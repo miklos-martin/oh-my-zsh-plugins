@@ -70,3 +70,12 @@ for console_command in $SYMFONY_DO_COMPLETE_CONSOLE
 do
     compdef _symfony2 $console_command
 done
+
+#Alias
+
+alias sf2='php app/console'
+alias sf2clear='php app/console cache:clear'
+alias sf='php app/console'
+alias sfcl='php app/console cache:clear'
+alias sfroute='php app/console router:debug'
+alias sfgb='php app/console generate:bundle'
