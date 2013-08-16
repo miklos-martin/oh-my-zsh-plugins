@@ -30,7 +30,7 @@ Options
 
 ### Dependencies
 
-This plugin only works, if `debian` plugin is activated, because this plugin relies on the `$use_sudo` variable, which is defined in the `debian` plugin.
+There are no dependencies.
 
 ### Example
 
@@ -51,7 +51,7 @@ This plugin completes the arguments from the users' list.
 
 ### Dependencies
 
-This plugin only works, if `debian` plugin is activated, because this plugin relies on the `$use_sudo` variable, which is defined in the `debian` plugin.
+There are no dependencies.
 
 ### Example
 
