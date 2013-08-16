@@ -1,6 +1,6 @@
 : ${FPM_DIR:=/etc/php5/fpm}
 
-if [ $use_sudo -eq 1 ]; then
+if [[ $use_sudo -eq 1 ]]; then
     sudo="sudo"
 else
     sudo=""
