@@ -2,7 +2,7 @@
 user = {user}
 group = {group}
 
-listen = /var/run/php-fpm/{user}.socket
+listen = /var/run/php5-fpm.{user}.socket
 
 pm = dynamic
 pm.max_children = 10

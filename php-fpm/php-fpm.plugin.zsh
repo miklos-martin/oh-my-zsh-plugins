@@ -56,11 +56,9 @@ _pool_generate () {
     
     echo "Generating pool for \033[33m$user\033[0m user with \033[33m$group\033[0m group"
         
-    user_id=$(cat /etc/passwd | grep $1 | awk -F : '{print $3 }')
-    pool_port=1$user_id
     : ${FPM_POOL_TEMPLATE:=$ZSH/plugins/php-fpm/templates/pool}
     
-    conf=$(sed -e 's/{user}/'$user'/g' -e 's/{group}/'$group'/g' -e 's/{pool_port}/'$pool_port'/g' $FPM_POOL_TEMPLATE )
+    conf=$(sed -e 's/{user}/'$user'/g' -e 's/{group}/'$group'/g' $FPM_POOL_TEMPLATE )
     
     echo $conf > $user.conf
     $sudo mv $user.conf $FPM_DIR/pool.d/$user.conf
