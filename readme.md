@@ -176,3 +176,5 @@ plugins=(symfony2)
 To build a list of available entities, it uses the `doctrine:mapping:info` command, in the default environment, with the default entity manager, and in debug mode.
 It could be a problem to you, if you have explicit mapping configured for each environment you use. If it's a real problem, please open an issue about it, or even better, send me a pull request with the solution. Thanks.
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/miklos-martin/oh-my-zsh-plugins/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
