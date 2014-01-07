@@ -78,7 +78,7 @@ Options
 
 ### Dependencies
 
-This plugin requires `watchr` to be installed. Instructions can be found "here":https://github.com/mynyml/watchr
+This plugin requires `watchr` to be installed. Instructions can be found [here](https://github.com/mynyml/watchr)
 
 ### Example
 
@@ -94,7 +94,7 @@ watchless -xc app.less
 
 ## bower
 
-"bower":https://github.com/twitter/bower is a package manager for the web.
+[bower](https://github.com/twitter/bower) is a package manager for the web.
 This plugin provides some aliases and completitions for this great tool.
 
 ### Aliases
