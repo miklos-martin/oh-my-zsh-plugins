@@ -1,0 +1,3 @@
+host=your.memcached.server
+ports=(11211 11212)
+
