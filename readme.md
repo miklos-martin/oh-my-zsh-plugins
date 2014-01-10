@@ -99,9 +99,10 @@ This plugin provides some aliases and completitions for this great tool.
 
 ### Aliases
 
-`bi`: installs a package (`bower install`)
-`bl`: lists installed packages (`bower list`)
-`bs`: searches for packages (`bower search`)
+* `bi`: installs a package (`bower install`)
+* `bl`: lists installed packages (`bower list`)
+* `bs`: searches for packages (`bower search`)
+* `bu`: updates packages (`bower update`)
 
 ### Completition
 
@@ -175,6 +176,35 @@ plugins=(symfony2)
 
 To build a list of available entities, it uses the `doctrine:mapping:info` command, in the default environment, with the default entity manager, and in debug mode.
 It could be a problem to you, if you have explicit mapping configured for each environment you use. If it's a real problem, please open an issue about it, or even better, send me a pull request with the solution. Thanks.
+
+## memcached
+
+This plugin helps you easily flush remote memcached instances and provides some aliases.
+
+### Aliases
+
+For local memcached instances
+
+* `memcst`: starts memcached
+* `memcstp`: stops memcached
+* `memcsts`: memcached status
+* `memcr`: restarts memcached
+* `memcfr`: force reloads memcached
+
+### Configuration
+
+Configuration must be done in your `.zshrc` (or in a file that is sourced), *before* the `plugins=(..)` line.
+You can configure your memecached init script path, just put a variable called `MEMCACHED_INIT_SCRIPT` holding the script's path. It is `/etc/init.d/memcached` by default.
+To be able to flush remote memcached instances (or local of course) define the `MEMCACHED_SERVER` variable. This should point to a directory, where per server config files live ([sample here](https://github.com/miklos-martin/oh-my-zsh-plugins/blob/master/memcached/server-config-example/servername)).
+
+The `memcflush` command does the thing based on these files. Just give it the config file name as the first and only argument. You also have completition for it ;)
+
+### Example
+```bash
+memcflush myserver
+```
+
+==========
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/miklos-martin/oh-my-zsh-plugins/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
