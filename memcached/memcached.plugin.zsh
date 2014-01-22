@@ -1,7 +1,8 @@
 : ${MEMCACHED_INIT_SCRIPT:=/etc/init.d/memcached}
+: ${MEMCACHED_SERVERS:=~/.memcached}
 
 # Flush a remote memcached server
-memcflush () {
+mcf () {
     
     if [[ -z "$MEMCACHED_SERVERS" ]]; then
         _error "Config not found"
@@ -34,7 +35,7 @@ memcflush () {
     done
 }
 
-compdef _memcached_flush memcflush
+compdef _memcached_flush mcf
 
 _memcached_get_server_list () {
     [ ! -z "$MEMCACHED_SERVERS" ] && [ -d $MEMCACHED_SERVERS ] && ls $MEMCACHED_SERVERS
@@ -56,8 +57,8 @@ else
 fi
 
 # Aliases
-alias memcst="$sudo $MEMCACHED_INIT_SCRIPT start"
-alias memcstp="$sudo $MEMCACHED_INIT_SCRIPT stop"
-alias memcsts="$sudo $MEMCACHED_INIT_SCRIPT status"
-alias memcr="$sudo $MEMCACHED_INIT_SCRIPT restart"
-alias memcfr="$sudo $MEMCACHED_INIT_SCRIPT force-reload"
+alias mcst="$sudo $MEMCACHED_INIT_SCRIPT start"
+alias mcstp="$sudo $MEMCACHED_INIT_SCRIPT stop"
+alias mcsts="$sudo $MEMCACHED_INIT_SCRIPT status"
+alias mcr="$sudo $MEMCACHED_INIT_SCRIPT restart"
+alias mcfr="$sudo $MEMCACHED_INIT_SCRIPT force-reload"

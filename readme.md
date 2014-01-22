@@ -195,7 +195,8 @@ For local memcached instances
 
 Configuration must be done in your `.zshrc` (or in a file that is sourced), *before* the `plugins=(..)` line.
 You can configure your memecached init script path, just put a variable called `MEMCACHED_INIT_SCRIPT` holding the script's path. It is `/etc/init.d/memcached` by default.
-To be able to flush remote memcached instances (or local of course) define the `MEMCACHED_SERVER` variable. This should point to a directory, where per server config files live ([sample here](https://github.com/miklos-martin/oh-my-zsh-plugins/blob/master/memcached/server-config-example/servername)).
+To be able to flush remote memcached instances (or local of course) create per server config files ([sample here](https://github.com/miklos-martin/oh-my-zsh-plugins/blob/master/memcached/server-config-example/servername)) in `~/.memcached` directory.
+You can customize this directory with the `MEMCACHED_SERVERS` variable.
 
 The `memcflush` command does the thing based on these files. Just give it the config file name as the first and only argument. You also have completition for it ;)
 
