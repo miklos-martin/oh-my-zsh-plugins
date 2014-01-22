@@ -1,0 +1,17 @@
+##
+# These are the minimum required directives
+##
+host=your.servers.address
+sharedDirectory=dire-on.your-server
+mountPoint=/mount/point/on/your/local/machine
+
+##
+# The following directives can be used to override globally set values for this server
+# The default values are shown here
+##
+# username=$USER
+# uid=1000
+# gid=1000
+# fileMode=0755
+# dirMode=0755
+
