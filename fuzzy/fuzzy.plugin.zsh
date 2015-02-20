@@ -1,4 +1,9 @@
 ##
+# Requires fzf https://github.com/junegunn/fzf
+# basics taken from: https://github.com/junegunn/fzf/wiki/Examples
+##
+
+##
 # fuzzy search for process to kill
 ##
 fkill() {
