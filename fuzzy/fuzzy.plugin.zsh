@@ -26,7 +26,7 @@ fgrep() {
 # fuzzy search for git refs to checkout
 ##
 fgco() {
-  local branch
-  branch=$(git for-each-ref --format="%(refname:short)" | fzf +s +m) &&
-  git checkout $(echo "$branch" | sed "s/.* //")
+  local ref
+  ref=$(git for-each-ref --format="%(refname:short)" | fzf +s +m) &&
+  git checkout $(echo "$ref" | sed "s/.* //")
 }
