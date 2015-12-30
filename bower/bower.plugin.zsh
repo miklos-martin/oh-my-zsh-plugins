@@ -1,5 +1,6 @@
 alias bi="bower install"
 alias bl="bower list"
+alias blp="bower list --paths"
 alias bs="bower search"
 alias bu="bower update"
 
