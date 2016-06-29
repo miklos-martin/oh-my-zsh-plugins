@@ -1,5 +1,5 @@
 : ${NGINX_DIR:=/etc/nginx}
-: ${NGINX_VHOST_TEMPLATE:=$ZSH/plugins/nginx/templates/symfony2}
+: ${NGINX_VHOST_TEMPLATE:=$ZSH/custom/plugins/nginx/templates/sitioweb}
 
 if [[ -e $( which -p sudo 2>&1 ) ]]; then
     sudo="sudo"
@@ -91,7 +91,7 @@ vhost () {
     do
       case $option in
         l ) ls $NGINX_DIR/sites-enabled; return ;;
-        u ) user=$OPTARG ;;
+        u ) ouser=$OPTARG ;;
         t ) tpl=$OPTARG ;;
         n ) enable=0 ;;
         w ) write_hosts=1 ;;
@@ -107,13 +107,13 @@ vhost () {
         return
     fi
     
-    if [ -e $ZSH/plugins/nginx/templates/$tpl ]; then
-        local template=$ZSH/plugins/nginx/templates/$tpl
+    if [ -e $ZSH/custom/plugins/nginx/templates/$tpl ]; then
+        local template=$ZSH/custom/plugins/nginx/templates/$tpl
     elif [ -e $tpl ]; then
         local template=$tpl
     fi
         
-    _vhost_generate $vhost $user
+    _vhost_generate $vhost $ouser
     
     if [ $enable -eq 1 ]; then
         en $vhost
@@ -141,18 +141,20 @@ _vhost_usage () {
 # Generate config file
 _vhost_generate () {
     local user=$(cat /etc/passwd | grep $2 | awk -F : '{print $1 }')
-    
-    if [ ! $user ]; then
-      echo "User \033[31m$2\033[0m doesn't have an account on \033[33m$HOST\033[0m"
-      return
-    fi
 
-    echo "Generating \033[32m$1\033[0m vhost for \033[33m$user\033[0m user"
+
+#  if [ ! $user ]; then
+#       echo "User \033[31m$2\033[0m doesn't have an account on \033[33m$HOST\033[0m"
+#       return
+#     fi
+    
+
+    echo "Generating \033[32m$1\033[0m vhost for \033[33m$ouser\033[0m user"
         
     local user_id=$(cat /etc/passwd | grep $2 | awk -F : '{print $3 }')
     local pool_port=1$user_id
     
-    sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$user'/g' -e 's/{pool_port}/'$pool_port'/g' $template | tee > $1.tmp
+    sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$ouser'/g' -e 's/{pool_port}/'$pool_port'/g' $template | tee > $1.tmp
     
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1
     
