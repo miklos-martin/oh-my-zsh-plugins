@@ -1,0 +1,59 @@
+server {
+    listen 80;
+    server_name {vhost} www.{vhost};
+    rewrite ^/(.*) https://{vhost}/$1 permanent;
+  }
+
+
+server {
+listen 443 ssl http2;
+    server_name www.{vhost};
+    ssl_certificate /etc/letsencrypt/live/{vhost}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{vhost}/privkey.pem;
+    ssl_prefer_server_ciphers on;
+    return 301 https://{vhost}$request_uri;
+  }
+
+
+server {
+    listen 443 ssl http2;
+    server_name {vhost};
+    ssl_certificate /etc/letsencrypt/live/{vhost}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{vhost}/privkey.pem;
+    ssl_prefer_server_ciphers on;
+
+    root /var/www/{user}/{vhost};
+    index index.php index.html index.htm;
+
+location / {
+        try_files $uri $uri/ /index.php?q=$request_uri;
+    }
+
+    # deny running scripts inside writable directories
+        location ~* /(images|cache|media|logs|tmp)/.*\.(php|pl|py|jsp|asp|sh|cgi)$ {
+                return 403;
+                error_page 403 /403_error.html;
+        }
+
+location ~ \.php$ {
+                try_files $uri =404;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+                fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+                fastcgi_index index.php;
+                include fastcgi_params;
+        }
+
+        location ~*  \.(jpg|jpeg|svg|png|gif|ico|css|js)$ {
+                expires 20d;
+        }
+
+        location ~*  \.(pdf)$ {
+                expires 30d;
+        }
+
+location ~ /\.ht {
+        deny all;
+    }
+
+}
