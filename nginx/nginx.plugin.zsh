@@ -31,7 +31,7 @@ en () {
         echo "\033[337;41m\nThe name of the vhost is required!\n\033[0m";
         return
     fi
-    
+
     if [ ! -e $NGINX_DIR/sites-available/$1 ]; then
         echo "\033[31m$1\033[0m doesn't exist";
         return
@@ -98,27 +98,27 @@ vhost () {
         h ) _vhost_usage; return ;;
       esac
     done
-    
+
     shift $[ $OPTIND - 1 ]
     local vhost=$1
-  
+
     if [ -z "$vhost" ]; then
         echo "\033[337;41m\nThe name of the vhost is required!\n\033[0m"
         return
     fi
-    
+
     if [ -e $ZSH/custom/plugins/nginx/templates/$tpl ]; then
         local template=$ZSH/custom/plugins/nginx/templates/$tpl
     elif [ -e $tpl ]; then
         local template=$tpl
     fi
-        
+
     _vhost_generate $vhost $ouser
-    
+
     if [ $enable -eq 1 ]; then
         en $vhost
     fi
-    
+
     if [ $write_hosts -eq 1 ]; then
         _write_hosts $vhost
     fi
@@ -147,17 +147,17 @@ _vhost_generate () {
 #       echo "User \033[31m$2\033[0m doesn't have an account on \033[33m$HOST\033[0m"
 #       return
 #     fi
-    
+
 
     echo "Generating \033[32m$1\033[0m vhost for \033[33m$ouser\033[0m user"
-        
+
     local user_id=$(cat /etc/passwd | grep $2 | awk -F : '{print $3 }')
     local pool_port=1$user_id
-    
+
     sed -e 's/{vhost}/'$1'/g' -e 's/{user}/'$ouser'/g' -e 's/{pool_port}/'$pool_port'/g' $template | tee > $1.tmp
-    
+
     $sudo mv $1.tmp $NGINX_DIR/sites-available/$1
-    
+
     if [ -e $NGINX_DIR/sites-available/$1 ]; then
         echo "\033[32m$1\033[0m vhost has been successfully created"
     else
@@ -174,14 +174,11 @@ _write_hosts () {
 		if [ -e $temp ]; then
 			echo "$line" >> $temp;
 		else
-			echo "$line $1" > $temp;		
+			echo "$line $1" > $temp;
 		fi
 	done
-	
+
 	$sudo mv $temp /etc/hosts;
-	
+
 	echo "\033[32m$1\033[0m vhost has been successfully written in /etc/hosts"
 }
-
-alias ngt="$sudo nginx -t"
-alias ngr="$sudo service nginx restart"
